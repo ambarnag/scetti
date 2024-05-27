@@ -1,5 +1,5 @@
+transformers
 torch 
-torchvision
 streamlit
 streamlit_jupyter
 nbdev
@@ -7,5 +7,7 @@ pandas
 numpy
 PyMuPDF
 spacy
-transformers
 pytesseract
+os
+time
+glob
