@@ -215,6 +215,7 @@ if uploaded_file and submitted:
 
         # print sentences not classified as 'None'
         app.subheader("Text classified as Netzero, Reduction, or Other target", divider="blue")
+        app.markdown(":information_source: Double-click on text to expand. Hover on top right corner of table for more options.")
         df1 = df[df.label!='None'].drop('env_label', axis=1)
         app.dataframe(df1, 
                      hide_index=True, 
