@@ -9,10 +9,17 @@ import fitz # extract text from true PDF
 import pytesseract # extract text from scanned PDF
 import spacy # parsing text into sentences
 
+# returns no. of words in a sentence
+def no_words(txt):
+    return len(txt.strip().split())
+    
 # function to extract text from a 'true' PDF
-def true_pdf2text(path):
-    # doc = fitz.open(path) # uncomment to test on local file
-    doc = fitz.open(stream=path, filetype="pdf")
+def true_pdf2text(path, stream=False):
+    if stream:
+        doc = fitz.open(stream=path, filetype="pdf") # file uploaded to web app or similar context
+    else:
+        doc = fitz.open(path) # file saved on disk
+    
     text = ""
     for page in doc:
         text += page.get_text()
@@ -35,11 +42,13 @@ def get_tesseract_path():
     return res
 
 # function to extract text from a 'scanned' PDF using OCR
-def scan_pdf2text(path, output_dir):
+def scan_pdf2text(path, output_dir, stream=False):
     pytesseract.pytesseract.tesseract_cmd = get_tesseract_path()
     
-    # doc = fitz.open(path) # uncomment to test on local file
-    doc = fitz.open(stream=path, filetype="pdf")
+    if stream:
+        doc = fitz.open(stream=path, filetype="pdf") # file uploaded to web app or similar context
+    else:
+        doc = fitz.open(path) # file saved on disk
     
     # create a unique temp dir to store .png files
     unique_id = str(uuid.uuid4())[:8]
@@ -64,23 +73,19 @@ def scan_pdf2text(path, output_dir):
 
 # function to extract sentences from text using spacy
 def text2sents(text, min_words):
-    # returns no. of words in a sentence
-    def no_words(txt):
-        return len(txt.strip().split())
-    
     # parse text into sentences using spacy
     nlp = spacy.load('en_core_web_sm')
     text = nlp(text)
-    sentences = list(map(str, text.sents))
+    res = list(map(str, text.sents))
     
     # clean up sentences
-    sentences = [x.replace("\n", "") for x in sentences] # remove newline chars
-    sentences = [x for x in sentences if x != ""] # remove blanks
-    sentences = [x for x in sentences if x[0].isupper()] # sentence should start with uppercase
-    sentences = [x for x in sentences if not "....." in x] # remove table of contents
-    sentences = [x for x in sentences if no_words(x) >= min_words] # remove sentences shorter than 'min_words'
+    res = [x.replace("\n", "").replace("\t", "") for x in res] # remove newline & tab
+    res = [x for x in res if x != ""] # remove blanks
+    res = [x for x in res if x[0].isupper()] # sentence should start with uppercase
+    res = [x for x in res if not "....." in x] # remove table of contents
+    res = [x for x in res if no_words(x) >= min_words] # remove sentences shorter than 'min_words'
     
-    return sentences
+    return res
 
 # function to annotate PDF for all target text found
 def annotate_target_text(path, target_text):    

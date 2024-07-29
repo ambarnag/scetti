@@ -1,0 +1,18 @@
+All the NLP models on which the Corporate Greenwashing Detector tool is built are included in the ClimateBERT collection. ClimateBERT is a Large Language Model (LLM) based on DistilRoBERTa and pretrained on a text corpus comprising climate-related research paper abstracts, corporate and general news and reports from companies. It is publicly available on [Hugging Face](https://huggingface.co/climatebert/distilroberta-base-climate-f). An ensemble of models finetuned for downstream tasks are also available:
+   
+:one: [Base Climate Detector](https://huggingface.co/climatebert/distilroberta-base-climate-detector): Establish a climate context by detecting 
+climate-related paragraphs  
+:two: [Sentiment](https://huggingface.co/climatebert/distilroberta-base-climate-sentiment): Classify the climate-related sentiment in 
+climate-related paragraphs  
+:three: [Commitment](https://huggingface.co/climatebert/distilroberta-base-climate-commitment): Identify whether or not a given climate-related 
+paragraph is about climate-related commitments and actions  
+:four: [Specificity](https://huggingface.co/climatebert/distilroberta-base-climate-specificity): Identify whether a climate-related paragraph 
+is specific or non-specific  
+:five: [TCFD Categories](https://huggingface.co/climatebert/distilroberta-base-climate-tcfd): Assign a climate disclosure category to 
+climate-related paragraphs based on the four categories of the recommendations of the Task Force on  Climate-related Financial Disclosures (TCFD)  
+
+All of the above models were developed in a series of research papers by the author team of Julia Anna Bingler, Mathias Kraus, Markus Leippold, 
+and Nicolas Webersinke.
+
+The scoring methodology combines all four separate elements into a single Sustainability Score:  
+sustainability score = *f(% non-neutral statements, % opportunity vs risk, % commitment=Yes, % specific vs non-specific, % TCFD Metrics/Strategy)* [The sustainability score can have a maximum value of 100% for any given company.]

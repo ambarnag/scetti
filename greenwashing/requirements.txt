@@ -1,0 +1,10 @@
+transformers
+torch 
+streamlit
+streamlit_jupyter
+nbdev
+pandas
+numpy
+PyMuPDF
+spacy
+pytesseract
