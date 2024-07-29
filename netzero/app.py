@@ -44,7 +44,7 @@ cpr_pipe = pipeline("text-classification", model=model, tokenizer=tokenizer, fun
 # %% NetZero_Detector.ipynb 4
 # function to encapsulate all preprocessing steps
 def pdf_to_sentences(path, max_char, min_words=5):
-    text = pdf_utils.true_pdf2text(path=path) # check if true PDF
+    text = pdf_utils.true_pdf2text(path=path, stream=True) # check if true PDF
     
     if len(text) == 0:
         true_pdf = False
@@ -58,7 +58,7 @@ def pdf_to_sentences(path, max_char, min_words=5):
 
         # run OCR extraction
         output_dir = '../../pdf_images'
-        text = pdf_utils.scan_pdf2text(path=path, output_dir=output_dir)
+        text = pdf_utils.scan_pdf2text(path=path, output_dir=output_dir, stream=True)
         
         placeholder.empty()
     
